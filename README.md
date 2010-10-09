@@ -1,6 +1,6 @@
 # [The Greplin Programming Challenge](http://challenge.greplin.com/)
 
-I found the "The Greplin Programming Challenge" from
+I found the [The Greplin Programming Challenge](http://challenge.greplin.com/) from
 reddit/programming, and really enjoyed solving it in python.
 
 I decided it was a good practical way to get me to learn
