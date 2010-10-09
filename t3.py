@@ -24,10 +24,34 @@ Here is the list of numbers you should run your code on.
 The password is the number of subsets.  In the above case the
 answer would be 4.
 """
+from itertools import combinations
 
 numbers = open('numbers.csv', 'r').read().split(',')
 numbers = [int(i.strip()) for i in numbers]
 
+def find_subsets(lst):
+    """
+    find all unique sublists that added up equal match_sum.
+    """
+    lst.sort()
+    #lst.reverse()
+    flst = list(lst) #copy the list
+    subs = []
+    sum_matches = []
+
+    lst.pop() #prime the pump
+    for i in range(2, len(lst)):
+        combs = combinations(lst, i)
+        for c in combs:
+            #print c
+            sum_ = reduce(lambda x, y: x + y, c)
+            print sum_, c
+            if sum_ in flst: #unique list so no sum_ will match two items
+                subs.append({sum_ : c})
+
+    return subs
+
 if __name__ == '__main__':
     print "question 3"
     print numbers
+    #combs combinations(numbers, 3)
