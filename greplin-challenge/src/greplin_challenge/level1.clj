@@ -1,3 +1,5 @@
+(ns greplin-challenge.level1)
+
 ;; Level 1
 ;;
 ;; ----------------------------------------
@@ -7,3 +9,6 @@
 ;;
 ;; As an example, if the input was "I like racecars that go fast"
 ;; the password would be "racecar".
+
+
+(print "asd")
