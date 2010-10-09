@@ -1,4 +1,4 @@
-http://challenge.greplin.com/
+# [The Greplin Programming Challenge](http://challenge.greplin.com/)
 
 I found the "The Greplin Programming Challenge" from
 reddit/programming, and really enjoyed solving it in python.
