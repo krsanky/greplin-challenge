@@ -18,6 +18,14 @@ Level 2
 	of this task, note that for the number 12 we consider the sum of the prime divisors
 	to be 2 + 3 = 5.  We do not include 2 twice even though it divides 12 twice.
 
+the sum of the prime divisors of last answer plus 1 .... 514230
+
+2 3 5 61 281
+
+2 + 3 + 5 + 61 + 281
+Out[39]: 352  <--- ANSWER
+
+
 """
 
 import math
@@ -34,6 +42,13 @@ def is_prime(num):
         if num % i == 0:
             return False
     return True
+
+def next_prime():
+    n = 2
+    while True:
+        if is_prime(n):
+            yield n
+        n += 1
 
 def fibo():
     """a generator for Fibonacci numbers, goes to next number in series on each call"""
@@ -59,6 +74,19 @@ def next_fibo_prime(num):
         if is_prime(next):
             return next
         next = next_gt_fibo(next)
+
+def get_prime_div(num):
+    """
+    get the next prime div after 1
+    """
+    if is_prime(num):
+        return None
+    np = next_prime()
+    d = np.next()
+    while d < num:
+        if num % d == 0:
+            return d
+        d= np.next()
 
 if __name__ == '__main__':
     print "question 2"
