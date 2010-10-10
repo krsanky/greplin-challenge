@@ -9,6 +9,9 @@
 ;;
 ;; As an example, if the input was "I like racecars that go fast"
 ;; the password would be "racecar".
+;;
+;; ---- notes:
+;;  try leavinge the strings as seqs, to see if it's faster.
 
 (def getty-txt (.toLowerCase (slurp "gettysburg.txt")))
 
