@@ -1,6 +1,7 @@
 (ns greplin-challenge.level3
   (:use clojure.contrib.combinatorics))
 
+
 ;; Level 3
 ;;
 ;; ----------------------------------------
@@ -24,6 +25,41 @@
 ;; The password is the number of subsets.  In the above case the
 ;; answer would be 4.
 
-(def numbers (.toLowerCase (slurp "numbers.csv")))
+(def *numbers* (sort (for [n (.split (slurp "numbers.csv") ",")] (Integer/parseInt (.trim n)))))
+
+(defn seq-sum-in-numbers [s]
+  "this sums the seq items, and checks if the value is in *numbers*"
+  (let [sum (reduce #(+ %1 %2) s)]
+    (some #(= sum %) *numbers*)))
+
+
+(defn find-subsets [len]
+  "find subsets of lst of count(len) that summ up to
+   to equal an elem. of *numbers*"
+  (let [combs (combinations *numbers* len)]
+    ;;filter the combs. to ones that add up to a number in *numbers*
+    (filter seq-sum-in-numbers combs)))
+
+
+(defn find-all-subsets []
+  "go thru *numbers* finding all combinations of numbers of
+   length (count *numbers*)-1 to 2"
+  (let [results (ref [])]
+    (loop [len (- (count *numbers*) 1)]
+      (if (<= len 2)
+        nil
+        (let [subs (find-subsets len)]
+          (println (str len ": " subs))
+          (dosync (alter results #(concat % subs)))
+          (recur (dec len)))))
+    @results))
+
+
 
 (println "level 3")
+
+(def my-subs (find-all-subsets))
+
+(println (str "answer: " (count my-subs)))
+
+
