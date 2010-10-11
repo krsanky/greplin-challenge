@@ -45,7 +45,7 @@
   "go thru *numbers* finding all combinations of numbers of
    length (count *numbers*)-1 to 2"
   (let [results (ref [])]
-    (loop [len (- (count *numbers*) 1)]
+    (loop [len (count *numbers*)]
       (if (<= len 2)
         nil
         (let [subs (find-subsets len)]
@@ -60,6 +60,7 @@
 
 (def my-subs (find-all-subsets))
 
+(println "my answer is off by one .... must be some obvious mistake ...")
 (println (str "answer: " (count my-subs)))
 
 
