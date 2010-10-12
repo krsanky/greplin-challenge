@@ -52,6 +52,10 @@ def find_subsets(lst):
     return subs
 
 if __name__ == '__main__':
-    print "question 3"
-    print numbers
-    #combs combinations(numbers, 3)
+    print "level 3"
+    #print numbers
+
+    subs = find_subsets(numbers)
+    #print subs
+    print "answer: %s" % len(subs)
+

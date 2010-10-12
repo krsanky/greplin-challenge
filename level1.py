@@ -47,4 +47,4 @@ def longest_rev_str(text):
             if s == s[::-1]: return s
 
 if __name__ == '__main__':
-    print str(longest_rev_str(text))
+    print "answer: " + str(longest_rev_str(text))

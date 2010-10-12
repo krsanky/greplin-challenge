@@ -19,6 +19,16 @@ of this task, note that for the number 12 we consider the sum of the prime divis
 to be 2 + 3 = 5.  We do not include 2 twice even though it divides 12 twice.
 
 
+---- next-part:
+Step 1. Use your code to compute the smallest prime fibonacci number
+	greater than 227,000.  Call this number X.
+
+Step 2. The password for level 3 is the sum of prime divisors of (X + 1).
+                                                               (parens i added)
+
+Note: If you call the number instead, it will check your answer for step 1.
+
+
 --notes
 the sum of the prime divisors of last answer plus 1 .... 514230
 
@@ -39,12 +49,12 @@ def is_prime(num):
     (10:22:41 PM) tinker: to establish if A is prime
     """
     #for i in range(2, int(math.ceil(math.sqrt(num)))):
-    for i in range(2, num):
+    for i in range(2, num): #lazy :)
         if num % i == 0:
             return False
     return True
 
-def next_prime():
+def prime():
     n = 2
     while True:
         if is_prime(n):
@@ -58,11 +68,8 @@ def fibo():
         yield a
         a, b = b, a + b
 
-def next_gt_fibo(num):
-    """
-    assume num is pos. int
-    return the next fibo num *greater than* num
-    """
+def next_fibo(num):
+    """return the next fibo num *greater than* num"""
     f = fibo()
     next = f.next()
     while next <= num:
@@ -70,24 +77,41 @@ def next_gt_fibo(num):
     return next
 
 def next_fibo_prime(num):
-    next = next_gt_fibo(num)
-    while True:
+    next = next_fibo(num)
+    while True: #don't run away loop!
         if is_prime(next):
             return next
-        next = next_gt_fibo(next)
+        next = next_fibo(next)
 
-def get_prime_div(num):
-    """
-    get the next prime div after 1
-    """
-    if is_prime(num):
-        return None
-    np = next_prime()
-    d = np.next()
-    while d < num:
-        if num % d == 0:
-            return d
-        d= np.next()
+def first_prime_div(num):
+    prm = prime()
+    div = prm.next()
+    while div <= num:
+        if num % div == 0:
+            return div
+        div = prm.next()
+
+def prime_divs(num):
+    divs = []
+    while True:
+        div = first_prime_div(num)
+        divs.append(div)
+        if is_prime(num):
+            break
+        #print "num: %s div: %s" % (num, div)
+        num /= div
+
+
+    return divs
 
 if __name__ == '__main__':
-    print "question 2"
+    print "level 2"
+
+    x = next_fibo_prime(227000)
+    print "X + 1: %s" % (x + 1)
+    x += 1
+
+    divs = prime_divs(x)
+    print divs
+
+    print "answer: %s" % reduce(lambda x, y: x + y, divs)
