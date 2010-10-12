@@ -13,8 +13,11 @@
 ;; ---- notes:
 ;; http://challenge.greplin.com/static/gettysburg.txt
 
+(set! *warn-on-reflection* true)
+
 (def *getty-txt* (.toLowerCase (slurp "gettysburg.txt")))
 
+;;i think partition is the slow part...
 (defn find-rev-seq [s len]
   "find one reversible seq of length 'len' in 's'"
   (let [sub-seqs (partition len 1 s)] ;;get all consecutive seqs of length 'len' in 's'
