@@ -27,6 +27,7 @@
 ;; Note: If you call the number instead, it will check your answer for step 1.
 ;;
 ;; ---- notes:
+;; (fibs) returns a seq of all fibonaccis:
 ;; http://github.com/richhickey/clojure-contrib/blob/master/src/main/clojure/clojure/contrib/lazy_seqs.clj
 
 (defn prime? [num]
@@ -34,22 +35,14 @@
   (some true? (for [n primes :while (<= n num)] (= n num))))
 
 (defn next-fibo [num]
-  "assume num is pos. int
-   return the next fibo num *greater than* num"
-  (loop [fibs (fibs)]
-    (if (> (first fibs) num)
-      (first fibs)
-      (recur (rest fibs)))))
+  "return the next fibo num *greater than* num"
+  (some #(if (> % num) %) (fibs)))
 
 (defn next-fibo-prime [num]
   (loop [f (next-fibo num)]
     (if (prime? f)
       f
       (recur (next-fibo f)))))
-
-;;1st part:
-(println (str "(next-fibo-prime 227000) = " (next-fibo-prime 227000)))
-;;(next-fibo-prime 227000) = 514229
 
 (defn first-prime-div [num]
   (some #(if (= (mod num %) 0) %) primes))
@@ -62,7 +55,14 @@
         (conj divs div)
         (recur (/ num div) (conj divs div))))))
 
-(println (str "answer: " (apply + (distinct (prime-divs (+ 514229 1))))))
+(defn run2 []
+  (do
+    ;;1st part:
+    (println (str "(next-fibo-prime 227000) = " (next-fibo-prime 227000)))
+    ;;(next-fibo-prime 227000) = 514229
+
+    (println (str "answer: " (apply + (distinct (prime-divs (+ 514229 1))))))))
+
 
 
 
