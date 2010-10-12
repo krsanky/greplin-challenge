@@ -9,6 +9,9 @@
 ;;
 ;; As an example, if the input was "I like racecars that go fast"
 ;; the password would be "racecar".
+;;
+;; ---- notes:
+;; http://challenge.greplin.com/static/gettysburg.txt
 
 (def *getty-txt* (.toLowerCase (slurp "gettysburg.txt")))
 

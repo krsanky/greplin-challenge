@@ -10,6 +10,9 @@ The password is the longest substring that is the same in reverse.
 
 As an example, if the input was "I like racecars that go fast"
 the password would be "racecar".
+
+-- notes:
+http://challenge.greplin.com/static/gettysburg.txt
 """
 
 text = open('gettysburg.txt', 'r').read().lower()
