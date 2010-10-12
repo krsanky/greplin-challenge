@@ -25,42 +25,42 @@
 ;; The password is the number of subsets.  In the above case the
 ;; answer would be 4.
 
-(def *numbers* (sort (for [n (.split (slurp "numbers.csv") ",")] (Integer/parseInt (.trim n)))))
+(def *numbers* (sort (for [n (.split (slurp "numbers.csv") ",")]
+                       (Integer/parseInt (.trim n)))))
 
-(defn seq-sum-in-numbers [s]
-  "this sums the seq items, and checks if the value is in *numbers*"
-  (let [sum (reduce #(+ %1 %2) s)]
-    (some #(= sum %) *numbers*)))
+(defn sum-in-seq [seq-sum match-seq]
+  "this sums the seq-sum items, and checks if the value is in match-seq"
+  (let [sum (reduce #(+ %1 %2) seq-sum)]
+    (some #(= sum %) match-seq)))
 
-
-(defn find-subsets [len]
+(defn find-subsets [s len]
   "find subsets of lst of count(len) that summ up to
-   to equal an elem. of *numbers*"
-  (let [combs (combinations *numbers* len)]
-    ;;filter the combs. to ones that add up to a number in *numbers*
-    (filter seq-sum-in-numbers combs)))
-
-
-(defn find-all-subsets []
-  "go thru *numbers* finding all combinations of numbers of
-   length (count *numbers*)-1 to 2"
+   to equal an elem. of 's'"
   (let [results (ref [])]
-    (loop [len (count *numbers*)]
-      (if (<= len 2)
+    (doseq [comb (combinations s len)]
+      (if (sum-in-seq comb s)
+        (dosync (alter results #(conj % comb)))))
+    @results))
+
+(defn find-all-subsets [s]
+  "go thru 's' finding all combinations of numbers
+   that added up equal another number in s"
+  (let [results (ref [])]
+    (loop [len (count s)]
+      (if (<= len 1)
         nil
-        (let [subs (find-subsets len)]
+        (let [subs (find-subsets s len)]
           (println (str len ": " subs))
           (dosync (alter results #(concat % subs)))
           (recur (dec len)))))
     @results))
 
 
+(defn run []
+  (println "level 3")
+  ;;(def my-subs (find-all-subsets (range 10)))
+  (def my-subs (find-all-subsets *numbers*))
+  (println (str "answer: " (count my-subs))))
 
-(println "level 3")
-
-(def my-subs (find-all-subsets))
-
-(println "my answer is off by one .... must be some obvious mistake ...")
-(println (str "answer: " (count my-subs)))
 
 
