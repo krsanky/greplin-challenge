@@ -56,7 +56,7 @@
     @results))
 
 
-(defn run []
+(defn run3 []
   (println "level 3")
   ;;(def my-subs (find-all-subsets (range 10)))
   (def my-subs (find-all-subsets *numbers*))
