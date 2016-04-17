@@ -22,10 +22,6 @@
 # Step 2. The password for level 3 is the sum of prime divisors of (X + 1).
 #                                                                (parens i added)
 # Note: If you call the number instead, it will check your answer for step 1.
-#
-# ---- notes:
-# (fibs) returns a seq of all fibonaccis:
-# http://github.com/richhickey/clojure-contrib/blob/master/src/main/clojure/clojure/contrib/lazy_seqs.clj
 
 defmodule Level2 do
   #import Enum, only: [chunk: 3, find: 2, reverse: 1]
@@ -36,7 +32,11 @@ defmodule Level2 do
       1 -> false
       2 -> true
       3 -> true
-      other -> to_list(2..round(:math.sqrt(other))) |> map(&(rem(other, &1)==0)) |> any? |> (&(not &1)).()
+      other -> to_list(2..round(:math.sqrt(other))) 
+        |> map(&(rem(other, &1)==0)) 
+        |> any? 
+        |> &not/1
+        #|> (&(not &1)).()
     end
   end
 end
