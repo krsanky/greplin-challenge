@@ -19,7 +19,7 @@
 # Step 1. Use your code to compute the smallest prime fibonacci number
 # 	greater than 227,000.  Call this number X.
 #
-# Step 2. The password for level 3 is the sum of prime divisors of (X + 1).
+# Step 2. The password for level  the sum of prime divisors of (X + 1).
 #                                                                (parens i added)
 # Note: If you call the number instead, it will check your answer for step 1.
 
@@ -35,14 +35,26 @@ defmodule Level2 do
       other -> to_list(2..round(:math.sqrt(other))) 
         |> map(&(rem(other, &1)==0)) 
         |> any? 
-        |> &not/1
-        #|> (&(not &1)).()
+        |> (&(not &1)).()
     end
+  end
+
+  # can we do this with cycle?
+  def fibs do
+    Stream.unfold({0, 1}, fn {a, b} -> {a, {b, a + b}} end)
+  end
+
+  def next_fib(num) do
+    Level2.fibs |> Stream.filter(fn(x) -> x > num end) |> Enum.take(1)
   end
 end
 
 IO.puts "level 2..."
 IO.puts(Level2.prime?(24))
+
+Level2.fibs |> Enum.take(9) |> IO.inspect
+Level2.fibs |> Stream.filter(fn(x) -> x > 21 end) |> Enum.take(3) |> IO.inspect
+Level2.next_fib(21) |> IO.puts
 #(defn prime? [num]
 #  "checks if number is prime"
 #  (some true? (for [n primes :while (<= n num)] (= n num))))
