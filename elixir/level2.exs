@@ -26,7 +26,7 @@
 defmodule Level2 do
   #import Enum, only: [chunk: 3, find: 2, reverse: 1]
 
-  def prime?(number) do
+  def is_prime(number) do
     import Enum
     case number do
       1 -> false
@@ -44,31 +44,33 @@ defmodule Level2 do
     Stream.unfold({0, 1}, fn {a, b} -> {a, {b, a + b}} end)
   end
 
+  # not used for answer
   def next_fib(num) do
-    Level2.fibs |> Stream.filter(fn(x) -> x > num end) |> Enum.take(1)
+    Level2.fibs |> Stream.filter(&(&1 > num)) |> Enum.take(1) |> List.first
   end
+
+  def next_prime_fib(num) do
+    Level2.fibs |> Stream.filter(fn(n) -> (n > num) && (is_prime(n)) end) 
+      |> Enum.take(1) 
+      |> List.first
+  end      
+
 end
 
 IO.puts "level 2..."
-IO.puts(Level2.prime?(24))
-
+IO.puts(Level2.is_prime(24))
+require Integer
 Level2.fibs |> Enum.take(9) |> IO.inspect
-Level2.fibs |> Stream.filter(fn(x) -> x > 21 end) |> Enum.take(3) |> IO.inspect
-Level2.next_fib(21) |> IO.puts
-#(defn prime? [num]
-#  "checks if number is prime"
-#  (some true? (for [n primes :while (<= n num)] (= n num))))
-#
-#(defn next-fibo [num]
-#  "return the next fibo num *greater than* num"
-#  (some #(if (> % num) %) (fibs)))
-#
-#(defn next-fibo-prime [num]
-#  (loop [f (next-fibo num)]
-#    (if (prime? f)
-#      f
-#      (recur (next-fibo f)))))
-#
+Level2.fibs |> Stream.filter(&Integer.is_odd/1) |> Enum.take(3) |> IO.inspect
+Level2.next_fib(12) |> IO.inspect
+Level2.next_fib(21) |> IO.inspect
+Level2.next_fib(333) |> IO.inspect
+Level2.next_fib(9333) |> IO.inspect
+Level2.next_prime_fib(12) |> IO.inspect
+Level2.next_prime_fib(21) |> IO.inspect
+Level2.next_prime_fib(333) |> IO.inspect
+Level2.next_prime_fib(9333) |> IO.inspect
+
 #(defn first-prime-div [num]
 #  (some #(if (= (mod num %) 0) %) primes))
 #
