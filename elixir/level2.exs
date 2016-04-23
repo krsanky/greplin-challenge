@@ -26,7 +26,7 @@
 defmodule Level2 do
   #import Enum, only: [chunk: 3, find: 2, reverse: 1]
 
-  def is_prime(number) do
+  def prime?(number) do
     import Enum
     case number do
       1 -> false
@@ -39,7 +39,6 @@ defmodule Level2 do
     end
   end
 
-  # can we do this with cycle?
   def fibs do
     Stream.unfold({0, 1}, fn {a, b} -> {a, {b, a + b}} end)
   end
@@ -49,48 +48,76 @@ defmodule Level2 do
     Level2.fibs |> Stream.filter(&(&1 > num)) |> Enum.take(1) |> List.first
   end
 
+  def next_prime(n) do
+    Stream.iterate(n+1, &(&1 + 1)) 
+      |> Stream.filter(&prime?/1) 
+      |> Enum.take(1) 
+      |> List.first
+  end
+
   def next_prime_fib(num) do
-    Level2.fibs |> Stream.filter(fn(n) -> (n > num) && (is_prime(n)) end) 
+    Level2.fibs 
+      |> Stream.filter(fn n -> (n > num) && (prime? n) end) 
       |> Enum.take(1) 
       |> List.first
   end      
 
+  def primes do
+    Stream.unfold({2, 3}, fn {a, b} -> {a, {b, next_prime(b)}} end)
+  end
+
+  def prime_divs(n) do
+    primes
+      #|> Stream.each(&IO.inspect/1)
+      |> Stream.take_while(&(&1 < n))
+      |> Stream.filter(fn p -> rem(n, p) == 0 end)
+      |> Enum.to_list
+  end
+
+  # Step 1. Use your code to compute the smallest prime fibonacci number
+  # 	greater than 227,000.  Call this number X.
+  def target_X do
+    next_prime_fib(227_000)
+  end
+
+  # takes some time
+  def answer do
+    target_X + 1 
+      #|> IO.inspect
+      |> prime_divs
+      |> Enum.to_list
+      #|> IO.inspect
+      |> Enum.sum
+  end
+
+  def test do
+    require Integer
+    IO.puts(Level2.prime?(24))
+    Level2.fibs |> Enum.take(9) |> IO.inspect
+    Level2.fibs |> Stream.filter(&Integer.is_odd/1) |> Enum.take(3) |> IO.inspect
+    Level2.next_fib(12) |> IO.inspect
+    Level2.next_fib(21) |> IO.inspect
+    Level2.next_fib(333) |> IO.inspect
+    Level2.next_fib(9333) |> IO.inspect
+    Level2.next_prime_fib(12) |> IO.inspect
+    Level2.next_prime_fib(21) |> IO.inspect
+    Level2.next_prime_fib(333) |> IO.inspect
+    Level2.next_prime_fib(9333) |> IO.inspect
+    Level2.primes |> Enum.take(10) |> IO.inspect
+    Level2.next_prime(40) |> IO.inspect
+    Level2.next_prime(4) |> IO.inspect
+    Level2.next_prime(400) |> IO.inspect
+    Level2.next_prime(78) |> IO.inspect
+    Level2.primes |> Enum.take(15) |> IO.inspect
+    target_X |> IO.inspect
+    prime_divs(10) |> IO.inspect
+    prime_divs(90) |> IO.inspect
+    prime_divs(393) |> IO.inspect
+  end
+
 end
 
 IO.puts "level 2..."
-IO.puts(Level2.is_prime(24))
-require Integer
-Level2.fibs |> Enum.take(9) |> IO.inspect
-Level2.fibs |> Stream.filter(&Integer.is_odd/1) |> Enum.take(3) |> IO.inspect
-Level2.next_fib(12) |> IO.inspect
-Level2.next_fib(21) |> IO.inspect
-Level2.next_fib(333) |> IO.inspect
-Level2.next_fib(9333) |> IO.inspect
-Level2.next_prime_fib(12) |> IO.inspect
-Level2.next_prime_fib(21) |> IO.inspect
-Level2.next_prime_fib(333) |> IO.inspect
-Level2.next_prime_fib(9333) |> IO.inspect
-
-#(defn first-prime-div [num]
-#  (some #(if (= (mod num %) 0) %) primes))
-#
-#(defn prime-divs [num]
-#  (loop [num num divs []]
-#    (let [div (first-prime-div num)]
-#      ;;(println (str "[num div divs]: " num " " div " " divs))
-#      (if (>= div num)
-#        (conj divs div)
-#        (recur (/ num div) (conj divs div))))))
-#
-#(defn run2 []
-#  (do
-#    ;;1st part:
-#    (println (str "(next-fibo-prime 227000) = " (next-fibo-prime 227000)))
-#    ;;(next-fibo-prime 227000) = 514229
-#
-#    (println (str "answer: " (apply + (distinct (prime-divs (+ 514229 1))))))))
-
-
-
-
+#Level2.test
+Level2.answer |> IO.inspect
 
